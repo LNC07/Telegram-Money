@@ -13,16 +13,34 @@ document.getElementById("watchAd").addEventListener("click", function () {
 });
 
 document.getElementById("autoAds").addEventListener("click", function () {
-    alert("🔁 Auto Ads started! Ads will keep showing...");
-    function showAds() {
+    alert("🔁 Auto Ads started! Ads will keep showing every 5 seconds...");
+    
+    let autoAdInterval = setInterval(() => {
         show_8912734().then(() => {
             addPoints(10);
-            setTimeout(showAds, 5000); // 5 সেকেন্ড পর পর অ্যাড দেখাবে
         }).catch(() => {
             alert("⚠ Ad failed to load! Stopping auto ads...");
+            clearInterval(autoAdInterval); // যদি অ্যাড লোড না হয়, তাহলে Auto Ads বন্ধ হয়ে যাবে
         });
-    }
-    showAds();
+    }, 5000); // 5 সেকেন্ড পর পর নতুন অ্যাড দেখাবে
+
+    // Auto Ads বন্ধ করার জন্য ক্লিয়ার বাটন (ইচ্ছা করলে রাখতে পারো)
+    let stopButton = document.createElement("button");
+    stopButton.innerText = "⛔ Stop Auto Ads";
+    stopButton.style.display = "block";
+    stopButton.style.margin = "10px auto";
+    stopButton.style.padding = "10px";
+    stopButton.style.background = "red";
+    stopButton.style.color = "white";
+    stopButton.style.border = "none";
+    stopButton.style.cursor = "pointer";
+    document.body.appendChild(stopButton);
+
+    stopButton.addEventListener("click", function () {
+        clearInterval(autoAdInterval);
+        alert("❌ Auto Ads Stopped!");
+        stopButton.remove();
+    });
 });
 
 function addPoints(amount) {
